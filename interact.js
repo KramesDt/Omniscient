@@ -2,7 +2,7 @@ const { ethers } = require("ethers");
 const fs = require("fs");
 const path = require("path");
 
-const provider = new ethers.providers.JsonRpcProvider("http://localhost:8545"); // Replace with your Ethereum node URL
+const provider = new ethers.providers.JsonRpcProvider("http://localhost:8545"); // Replace with Ethereum node URL
 
 const contractData = fs.readFileSync(
   path.resolve(__dirname, "Omni.sol"),
@@ -11,7 +11,7 @@ const contractData = fs.readFileSync(
 const output = require("solc").compile(contractData, 1);
 const abi = JSON.parse(output.contracts[":Omni"].interface);
 
-const contractAddress = "0xYourContractAddress"; // Replace with your deployed contract address
+const contractAddress = "0xYourContractAddress"; // Replace with deployed contract address
 const gasLimit = 3000000; // Adjust based on your contract interaction requirements
 const gasPrice = ethers.utils.parseUnits("5", "gwei"); // Replace with appropriate gas price
 
