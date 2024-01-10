@@ -1,23 +1,22 @@
-const { ethers } = require("ethers");
-const fs = require("fs");
-const path = require("path");
+const { ethers } = require("hardhat");
 
-const provider = new ethers.providers.JsonRpcProvider("http://localhost:8545"); // Replace with Ethereum node URL
+const API_KEY = process.env.API_KEY;
+const PRIVATE_KEY = process.env.PRIVATE_KEY;
+const CONTRACT_ADDRESS = process.env.CONTRACT_ADDRESS;
+const SEPOLIA_URL = process.env.SEPOLIA_URL;
 
-const contractData = fs.readFileSync(
-  path.resolve(__dirname, "Omni.sol"),
-  "utf8"
-);
-const output = require("solc").compile(contractData, 1);
-const abi = JSON.parse(output.contracts[":Omni"].interface);
+const contractAbi = require("../artifacts/contracts/Omni.sol/OmniToken.json");
+// console.log(JSON.stringify(contractAbi.abi));
 
-const contractAddress = "0xYourContractAddress"; // Replace with deployed contract address
-const gasLimit = 3000000; // Adjust based on your contract interaction requirements
-const gasPrice = ethers.utils.parseUnits("5", "gwei"); // Replace with appropriate gas price
+// Provider
+// const provider = new ethers.providers.JsonRpcProvider(SEPOLIA_URL);
+const provider = new ethers.AlchemyProvider(network="sepolia", API_KEY);
 
-const wallet = new ethers.Wallet("0xYourPrivateKey", provider); // Replace with your private key
+// Signer
+const signer = new ethers.Wallet(PRIVATE_KEY, provider);
 
-const contract = new ethers.Contract(contractAddress, abi, wallet);
+// Contract
+const contract = new ethers.Contract(CONTRACT_ADDRESS, contractAbi.abi, signer);
 
 async function totalSupply() {
   const supply = await contract.totalSupply();
@@ -61,7 +60,7 @@ async function transferFrom(sender, recipient, amount) {
   console.log("Transfer from successful. Transaction hash:", transaction.hash);
 }
 
-// totalSupply();
+totalSupply();
 // balanceOf("0xAccountAddress");
 // transfer("0xRecipientAddress", ethers.utils.parseEther("10"));
 // allowance("0xOwnerAddress", "0xSpenderAddress");

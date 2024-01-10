@@ -2,25 +2,15 @@ const { ethers } = require("hardhat");
 
 async function main() {
   const deployer = await ethers.provider.getSigner();
-  console.log("Deployer: ", deployer);
   console.log("Deploying contracts with the account:", deployer.address);
-  const weiAmount = (await deployer.getBalance()).toString();
-  console.log("Account balance:", await ethers.utils.formatEther(weiAmount));
+  const accountBalance = await deployer.provider.getBalance(deployer.address);
+  console.log("Account balance: ", accountBalance.toString());
 
-  const initialSupply = 100000000; // Replace with the desired initial supply
-  const initialTokenPrice = ethers.parseEther("3"); // Set the initial price to $3 in Ether
+  // console.log("Account balance:", await ethers.utils.formatEther(weiAmount));
 
-  const Omni = await ethers.getContractFactory("Omniscient");
-  const omni = await Omni.deploy(
-    "Omniscient",
-    "OMNI",
-    initialSupply,
-    initialTokenPrice,
-    // {
-    //   gasLimit: gasLimit,
-    //   gasPrice: gasPrice,
-    // }
-  );
+  const Omni = await ethers.getContractFactory("OmniToken");
+  const omni = await Omni.deploy();
+  await omni.waitForDeployment();
 
   console.log("Token address:", omni.address);
 }
