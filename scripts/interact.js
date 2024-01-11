@@ -29,10 +29,12 @@ async function balanceOf(account) {
 }
 
 async function transfer(recipient, amount) {
-  const transaction = await contract.transfer(recipient, amount, {
-    gasLimit: gasLimit,
-    gasPrice: gasPrice,
-  });
+  const transaction = await contract.transfer(recipient, amount,
+    // {
+    // gasLimit: gasLimit,
+    // gasPrice: gasPrice,
+    // }
+  );
   console.log("Transfer successful. Transaction hash:", transaction.hash);
 }
 
@@ -61,8 +63,8 @@ async function transferFrom(sender, recipient, amount) {
 }
 
 totalSupply();
-// balanceOf("0xAccountAddress");
-// transfer("0xRecipientAddress", ethers.utils.parseEther("10"));
+balanceOf("0xDce0b6709DE395b63E1dFD26bC169C99513ECf50");
+// transfer("0xDce0b6709DE395b63E1dFD26bC169C99513ECf50", ethers.parseEther("10"));
 // allowance("0xOwnerAddress", "0xSpenderAddress");
 // approve("0xSpenderAddress", ethers.utils.parseEther("5"));
 // transferFrom(
